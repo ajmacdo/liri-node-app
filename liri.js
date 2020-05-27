@@ -6,7 +6,7 @@ require("dotenv").config();
 // var keys = require("./keys.js");
 
 //You should then be able to access your keys information like so
-//var spotify = new Spotify(keys.spotify);
+var spotify = new Spotify(keys.spotify);
 var axios = require("axios");
 var inquirer = require("inquirer");
 
@@ -64,11 +64,34 @@ function searchMovie() {
           .then(function (response) {
             // Then we print out the band data
             //data is an array. For each index in array, want to console log certain info...
-            //console.log(response.data);
+            console.log(JSON.stringify(response.data[0]));
             //console.log(response.data.venue.name);
             //console.log(response.data.venue.location);
-            console.log(JSON.stringify(response.data));
+          });
+      });
+  }
 
+  function searchSpotify() {
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          message: "What song would you like to search?",
+          name: "spotify",
+        },
+      ])
+      .then(function (spotifyResponse) {
+          var searchTerm = spotifyResponse.song
+          console.log(searchTerm);
+        // We then run the request with axios module on a URL with a JSON
+        axios
+          .get(
+            `https://rest.bandsintown.com/artists/` + searchTerm + `/events?app_id=${process.env.BINKEY}`)
+          .then(function (response) {
+            // Then we print out the spotify data
+            console.log(JSON.stringify(response.data[0]));
+            //console.log(response.data.venue.name);
+            //console.log(response.data.venue.location);
           });
       });
   }
@@ -97,9 +120,9 @@ function getStarted() {
         case "concert-this":
           searchBands();
           break;
-        // case "spotify-this-song":
-        //   searchSpotify(searchInput);
-        //   break;
+        case "spotify-this-song":
+          searchSpotify();
+          break;
         //   case "do-what-it-says":
         //   searchDo(searchInput)
         //   break;
@@ -109,10 +132,7 @@ function getStarted() {
     });
 }
 
-
 getStarted();
-
-
 
 
 //     if (inquirerResponse.confirm) {
@@ -123,3 +143,6 @@ getStarted();
 //       console.log("\nThat's okay " + inquirerResponse.username + ", come again when you are more sure.\n");
 //     }
 //   });
+
+
+ 
