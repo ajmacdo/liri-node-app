@@ -9,15 +9,10 @@ require("dotenv").config();
 //var spotify = new Spotify(keys.spotify);
 var axios = require("axios");
 var inquirer = require("inquirer");
-//Make it so liri.js can take in one of the following commands:
-// concert-this
-// spotify-this-song
-// do-what-it-says
-//movie-this
+
 function searchMovie() {
     inquirer
       .prompt([
-        // Here we give the user a list to choose from.
         {
           type: "input",
           message: "What movie would you like to search?",
@@ -26,6 +21,7 @@ function searchMovie() {
       ])
       .then(function (movieResponse) {
           var searchTerm = movieResponse.movie
+
           console.log(searchTerm);
         // We then run the request with axios module on a URL with a JSON
         axios
@@ -37,13 +33,9 @@ function searchMovie() {
             console.log(response.data);
             console.log("The movie's title is: " + response.data.Title);
             console.log("The year the movie came out is: " + response.data.Year);
-            console.log(
-              "The movie's IMDB rating is: " + response.data.imdbRating
-            );
-            console.log(
-              "The movie's Rotten Tomatoes rating is: " +
-                JSON.stringify(response.data.Ratings[1], ["Value"])
-            );
+            console.log("The movie's IMDB rating is: " + response.data.imdbRating);
+            console.log("The movie's Rotten Tomatoes rating is: " +
+                JSON.stringify(response.data.Ratings[1], ["Value"]));
             console.log("The movie was produced in: " + response.data.Country);
             console.log("The movie language is: " + response.data.Language);
             console.log("The movie's plot is: " + response.data.Plot);
@@ -55,7 +47,6 @@ function searchMovie() {
   function searchBands() {
     inquirer
       .prompt([
-        // Here we give the user a list to choose from.
         {
           type: "input",
           message: "What band would you like to search?",
@@ -68,16 +59,20 @@ function searchMovie() {
         // We then run the request with axios module on a URL with a JSON
         axios
           .get(
-            `https://rest.bandsintown.com/artists/" + searchTerm + "/events?app_id=${process.env.BINKEY}`)
+            `https://rest.bandsintown.com/artists/` + searchTerm + `/events?app_id=${process.env.BINKEY}`)
           
           .then(function (response) {
             // Then we print out the band data
-            console.log(response);
+            //data is an array. For each index in array, want to console log certain info...
+            //console.log(response.data);
+            //console.log(response.data.venue.name);
+            //console.log(response.data.venue.location);
+            console.log(JSON.stringify(response.data));
 
           });
       });
   }
-//Create a "Prompt" with a series of questions.
+//This is the function to set up the initial set of prompts for the user to select from the list of search options. 
 function getStarted() {
   inquirer
     .prompt([
@@ -116,6 +111,10 @@ function getStarted() {
 
 
 getStarted();
+
+
+
+
 //     if (inquirerResponse.confirm) {
 //       console.log("\nWelcome " + inquirerResponse.username);
 //       console.log("Your " + inquirerResponse.pokemon + " is ready for battle!\n");
