@@ -3,10 +3,10 @@
 require("dotenv").config();
 
 // Add the code required to import the keys.js file and store it in a variable.
-// var keys = require("./keys.js");
+var keys = require("./keys.js");
 
 //You should then be able to access your keys information like so
-var spotify = new Spotify(keys.spotify);
+var Spotify = new Spotify(keys.spotify);
 var axios = require("axios");
 var inquirer = require("inquirer");
 
@@ -95,7 +95,8 @@ function searchMovie() {
           });
       });
   }
-//This is the function to set up the initial set of prompts for the user to select from the list of search options. 
+
+//This is the function to set up the initial set of prompts for the user to select what they want to do from the list of search options. 
 function getStarted() {
   inquirer
     .prompt([
